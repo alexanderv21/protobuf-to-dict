@@ -87,6 +87,8 @@ def protobuf_to_dict(pb, type_callable_map=TYPE_CALLABLE_MAP, use_enum_labels=Fa
                 continue
             if _is_map_entry(field):
                 result_dict[field.name] = {}
+            elif use_enum_labels and field.type == FieldDescriptor.TYPE_ENUM:
+                result_dict[field.name] = field.enum_type.values_by_number[int(field.default_value)].name
             else:
                 result_dict[field.name] = field.default_value
 
